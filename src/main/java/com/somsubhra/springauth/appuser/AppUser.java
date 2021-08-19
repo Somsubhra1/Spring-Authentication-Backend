@@ -35,7 +35,7 @@ public class AppUser implements UserDetails {
     private String email;
     private String password;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) // for enums specify type to db
     private AppUserRole appUserRole;
     private Boolean locked;
     private Boolean enabled;
@@ -50,6 +50,7 @@ public class AppUser implements UserDetails {
         this.enabled = enabled;
     }
 
+    //    Returns the authorities granted to the user.
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(appUserRole.name());
