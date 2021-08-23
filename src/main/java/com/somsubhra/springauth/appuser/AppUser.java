@@ -38,7 +38,7 @@ public class AppUser implements UserDetails {
     @Enumerated(EnumType.STRING) // for enums specify type to db
     private AppUserRole appUserRole;
     private Boolean locked = false; // setting default values
-    private Boolean enabled = true;
+    private Boolean enabled = false;
 
     public AppUser(String firstName, String lastName, String email, String password, AppUserRole appUserRole) {
         this.firstName = firstName;
