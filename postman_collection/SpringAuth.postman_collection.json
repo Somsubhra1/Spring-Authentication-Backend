@@ -1,0 +1,68 @@
+{
+	"info": {
+		"_postman_id": "7de94445-9e84-4d76-915a-9ed52b529d2f",
+		"name": "SpringAuth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Som\",\n    \"lastName\": \"das\",\n    \"email\": \"som@s.com\",\n    \"password\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/registration/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"registration",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "confirm token",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/registration/confirm?token=9b93cf33-9e00-49dc-94fc-bcab9df30dff",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"registration",
+						"confirm"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "9b93cf33-9e00-49dc-94fc-bcab9df30dff"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
