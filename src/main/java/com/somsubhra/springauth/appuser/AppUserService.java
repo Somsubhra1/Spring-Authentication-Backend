@@ -1,5 +1,7 @@
 package com.somsubhra.springauth.appuser;
 
+import com.somsubhra.springauth.email.EmailSender;
+import com.somsubhra.springauth.registration.RegistrationService;
 import com.somsubhra.springauth.registration.token.ConfirmationToken;
 import com.somsubhra.springauth.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
@@ -20,6 +22,9 @@ public class AppUserService implements UserDetailsService {
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
+    private final EmailSender emailSender;
+    private final AppUserService appUserService;
+    private final RegistrationService registrationService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -31,6 +36,21 @@ public class AppUserService implements UserDetailsService {
         boolean userExists = appUserRepository.findByEmail(appUser.getEmail()).isPresent();
 
         if (userExists) {
+            if (!appUser.getEnabled()) {
+                String token = appUserService.signUpUser(
+                        new AppUser(
+                                appUser.getFirstName(),
+                                appUser.getLastName(),
+                                appUser.getEmail(),
+                                appUser.getPassword(),
+                                AppUserRole.USER
+                        ));
+                String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
+                emailSender.send(
+                        appUser.getEmail(),
+                        registrationService.buildEmail(appUser.getFirstName(), link)
+                );
+            }
             throw new IllegalStateException("Email already taken!");
         }
         String encodedPassword = bCryptPasswordEncoder.encode(appUser.getPassword());
@@ -50,9 +70,9 @@ public class AppUserService implements UserDetailsService {
 
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-//        Todo: Send email
         return token;
     }
+
     public int enableAppUser(String email) {
         return appUserRepository.enableAppUser(email);
     }
