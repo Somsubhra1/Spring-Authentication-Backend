@@ -38,6 +38,7 @@ public class ConfirmationToken {
 
     private LocalDateTime confirmedAt;
 
+    //    Many to one relationship. One user can have many tokens
     @ManyToOne
     @JoinColumn(
             nullable = false,
